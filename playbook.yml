@@ -44,7 +44,34 @@
       loop:
         - python3-dev
         - python3-pillow
+        - python3-pip
         - git
+    - name: Ensure deploy key is present
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/id_github"
+        type: ed25519
+      register: deploy_key
+    - name: Ensure deploy key is authorized
+      community.general.github_deploy_key:
+        key: "{{ deploy_key.public_key }}"
+        name: Raspberry Pi
+        state: present
+        read_only: false
+        owner: benbalter
+        repo: meeting-matrix
+        token: "{{ lookup('community.general.onepassword', 'Raspberry pi', field='GitHub Token') }}"
+    - name: Clone benbalter/meeting-matrix
+      git:
+        repo: git@github.com:benbalter/meeting-matrix.git
+        dest: /home/pi/meeting-matrix/
+        clone: true
+        update: true
+        key_file: ~/.ssh/id_github
+        accept_hostkey: true
+    - name: Install python requirements
+      pip:
+        chdir: /home/pi/meeting-matrix/
+        requirements: requirements.txt
     - name: Clone hzeller/rpi-rgb-led-matrix repo
       git:
         repo: https://github.com/hzeller/rpi-rgb-led-matrix
@@ -71,8 +98,3 @@
           PYTHON: /usr/bin/python3
           DLED_COLS: 64
           DLED_ROWS: 32
-    - name: Ensure deploy key is present
-      community.crypto.openssh_keypair:
-        path: "~/.ssh/id_github"
-        type: ed25519
-      register: deploy_key

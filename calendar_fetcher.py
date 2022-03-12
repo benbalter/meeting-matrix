@@ -8,7 +8,6 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from dateutil import parser
 
 class CalendarFetcher:
     """
@@ -51,12 +50,3 @@ class CalendarFetcher:
         except HttpError as error:
             print('An error occurred: %s' % error)
             return []
-
-    def time_remaining(self):
-        """
-        Returns the time remaining within the current event
-        """
-
-        event = self.current_event()
-        end_time = parser.parse(event['end'].get('dateTime'))
-        return end_time - datetime.datetime.now(datetime.timezone.utc)

@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import datetime
 import os.path
+import logging
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -9,6 +10,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from dateutil import parser
+from event import Event
 
 class CalendarFetcher:
     """
@@ -37,8 +39,11 @@ class CalendarFetcher:
     def current_event(self):
         """
         Retrieves the current event, if any
+
+        Returns an Events()
         """
         try:
+            logging.info("Fetching calendar")
 
             service = build('calendar', 'v3', credentials=self.creds)
             now = datetime.datetime.utcnow().isoformat() + 'Z'
@@ -46,17 +51,11 @@ class CalendarFetcher:
                                                   maxResults=1, singleEvents=True,
                                                   orderBy='startTime').execute()
             events = events_result.get('items', [])
-            return events[0]
+            logging.info("Found event: %s", events[0]['summary'])
+            
+            return Event(events[0])
 
         except HttpError as error:
             print('An error occurred: %s' % error)
             return []
 
-    def time_remaining(self):
-        """
-        Returns the time remaining within the current event
-        """
-
-        event = self.current_event()
-        end_time = parser.parse(event['end'].get('dateTime'))
-        return end_time - datetime.datetime.now(datetime.timezone.utc)

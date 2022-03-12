@@ -1,6 +1,5 @@
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
-import time
-
+import logging
 
 class Canvas:
     """
@@ -17,13 +16,13 @@ class Canvas:
         self.matrix = RGBMatrix(options=options)
 
         self.font = graphics.Font()
-        self.font.LoadFont("./rpi-rgb-led-matrix/fonts/7x13.bdf")
+        self.font.LoadFont("../rpi-rgb-led-matrix/fonts/7x13.bdf")
 
     def print_text(self, text):
         """
         Prints the given text to the matrix
         """
+        logging.info("Printing %s", text)
+        
         blue = graphics.Color(0, 0, 255)
         graphics.DrawText(self.matrix, self.font, 2, 10, blue, text)
-
-        time.sleep(10)

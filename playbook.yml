@@ -76,3 +76,7 @@
         path: "~/.ssh/id_github"
         type: ed25519
       register: deploy_key
+    - name: Allow Python to run as root
+      community.general.capabilities:
+        path: /usr/bin/python3.9
+        capability: "cap_sys_nice=eip"

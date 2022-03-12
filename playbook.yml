@@ -1,0 +1,78 @@
+- hosts: all
+  tasks:
+    - name: Ensure SSH Key is authorized
+      authorized_key:
+        user: pi
+        state: present
+        key: https://github.com/benbalter.keys
+    - name: update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: dist
+        update_cache: true
+    - name: set timezone
+      community.general.timezone:
+        name: America/New_York
+      become: true
+    - name: install unattended upgrades
+      become: true
+      apt:
+        name: unattended-upgrades
+        state: present
+    - name: Setup unattended upgrades
+      debconf:
+        name: unattended-upgrades
+        question: unattended-upgrades/enable_auto_updates
+        vtype: boolean
+        value: "true"
+    - name: install ntp
+      become: true
+      apt:
+        name: ntp
+        state: present
+    - name: enable ntp
+      service:
+        name: ntp
+        state: started
+        enabled: true
+    - name: Install dependencies
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: true
+      loop:
+        - python3-dev
+        - python3-pillow
+        - git
+    - name: Clone hzeller/rpi-rgb-led-matrix repo
+      git:
+        repo: https://github.com/hzeller/rpi-rgb-led-matrix
+        dest: /home/pi/rpi-rgb-led-matrix/
+        clone: true
+        update: true
+        accept_hostkey: true
+    - name: Build Python bindings
+      community.general.make:
+        chdir: /home/pi/rpi-rgb-led-matrix/
+        target: build-python
+        params:
+          HARDWARE_DESC: adafruit-hat
+          PYTHON: /usr/bin/python3
+          DLED_COLS: 64
+          DLED_ROWS: 32
+    - name: Install Python bindings
+      become: true
+      community.general.make:
+        chdir: /home/pi/rpi-rgb-led-matrix/
+        target: install-python
+        params:
+          HARDWARE_DESC: adafruit-hat
+          PYTHON: /usr/bin/python3
+          DLED_COLS: 64
+          DLED_ROWS: 32
+    - name: Ensure deploy key is present
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/id_github"
+        type: ed25519
+      register: deploy_key

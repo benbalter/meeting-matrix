@@ -18,6 +18,12 @@ class Canvas:
         self.font = graphics.Font()
         self.font.LoadFont("../rpi-rgb-led-matrix/fonts/7x13.bdf")
 
+    def clear(self):
+        """
+        Clears the canvas
+        """
+        self.matrix.Clear()
+
     def print_text(self, text):
         """
         Prints the given text to the matrix
@@ -25,4 +31,5 @@ class Canvas:
         logging.info("Printing %s", text)
         
         blue = graphics.Color(0, 0, 255)
+        self.clear()
         graphics.DrawText(self.matrix, self.font, 2, 10, blue, text)

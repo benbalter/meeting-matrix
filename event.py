@@ -58,4 +58,4 @@ class Event:
     Returns the number of minutes remaining in the event as an integer
     """
 
-    return math.ceil(float(self.time_remaining().total_seconds()) / 60.0)
+    return round(float(self.time_remaining().total_seconds()) / 60.0)

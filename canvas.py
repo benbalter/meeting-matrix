@@ -12,11 +12,11 @@ class Canvas:
         options.cols = 64
         options.gpio_slowdown = 2
         options.hardware_mapping = 'adafruit-hat'
-        #options.pixel_mapper_config = 'mirror:h'
+        options.pixel_mapper_config = 'mirror:h'
         self.matrix = RGBMatrix(options=options)
 
         self.font = graphics.Font()
-        self.font.LoadFont("../rpi-rgb-led-matrix/fonts/7x13.bdf")
+        self.font.LoadFont("../rpi-rgb-led-matrix/fonts/6x10.bdf")
 
     def clear(self):
         """

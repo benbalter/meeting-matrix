@@ -4,7 +4,11 @@
 
 ## What it does
 
-A Raspberry Pi powered RGB LED Matrix to sit over your shoulder during virtual meetings and subtly count down the time remaining in a meeting to keep things on track. Specifically, it displays the number of minutes remaining (e.g., `5 minutes`) when:
+A Raspberry Pi powered RGB LED Matrix to sit over your shoulder during virtual meetings and subtly count down the time remaining in a meeting to keep things on track.
+
+Have you ever been in a meeting that just "ran out of time"? Perhaps there's that one person that asks a questions or starts a new topic with less than a minute remaining. There has to be a better way! 
+
+Introducing *Meeting Matrix*. Meeting Matrix politely counts down the time remaining in a meeting on an RGB LED Matrix, which you can subtly place over your shoulder. Specifically, it connects to your calendar and displays the number of minutes remaining in a meeting (e.g., `5 minutes`) when:
 
 * Half of the meeting has elapsed (for example, 30 minutes for an hour meeting, 15 minutes for a 30 minute meeting)
 * Every 10 minutes when 50% of the meeting to 20 minutes are remaining

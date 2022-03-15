@@ -15,6 +15,8 @@ Introducing *Meeting Matrix*. Meeting Matrix politely counts down the time remai
 * Every 5 minutes when 20 minutes to 5 minutes are remaining
 * Every minute for the last 5 minutes
 
+Here's what it looks like in action:
+
 ![10-minutes](https://user-images.githubusercontent.com/282759/158282474-74941ff5-0823-48ca-9719-a5d6a83d08d3.png)
 
 ## How it works

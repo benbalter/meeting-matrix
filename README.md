@@ -11,6 +11,8 @@ A Raspberry Pi powered RGB LED Matrix to sit over your shoulder during virtual m
 * Every 5 minutes when 20 minutes to 5 minutes are remaining
 * Every minute for the last 5 minutes
 
+![10-minutes](https://user-images.githubusercontent.com/282759/158282474-74941ff5-0823-48ca-9719-a5d6a83d08d3.png)
+
 ## How it works
 
 The Raspberry Pi connects to your Google Calendar to know when you're in a meeting and how much time is remaining. After that, the hardware/software interface consists of:

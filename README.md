@@ -42,3 +42,7 @@ SSH into the device and run `python meeting_matrix.py`.
 ## License
 
 The project is licensed under the GPLv2 license based on its dependency on [`hzeller/rpi-rgb-led-matrix`](https://github.com/hzeller/rpi-rgb-led-matrix).
+
+## Roadmap
+
+See the [open issues](https://github.com/benbalter/meeting-matrix/issues).

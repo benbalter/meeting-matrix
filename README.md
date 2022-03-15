@@ -20,9 +20,10 @@ The Raspberry Pi connects to your Google Calendar to know when you're in a meeti
 * [RGB Matrix](https://www.adafruit.com/category/327) (any size)
 * [Controlling RGB LED display with Raspberry Pi GPIO](https://github.com/hzeller/rpi-rgb-led-matrix)
 
+This is my first Python project, so please be kind!
 ## Setup 
 
-This repository contains an [Ansible Playbook](playbook.yml) which will configure the Raspberry Pi with a single command.
+This repository contains an [Ansible Playbook](playbook.yml) which will build/install the necessary dependencies configure the Raspberry Pi with a single command:
 
 1. Flash the 64 bit Raspian lite image to the Micro SD card, configuring wifi and your SSH key
 2. Customize [`playbook.yml`](playbook.yml) and [`hosts.example.yml`](hosts.example.yml) (as `hosts.yml`)

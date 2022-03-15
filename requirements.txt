@@ -5,3 +5,4 @@ requests
 pylint
 autopep8
 python-dateutil
+inflect

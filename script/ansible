@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+source env/bin/activate
+eval $(op signin balter)
+ansible-playbook playbook.yml --inventory hosts.yml
+op signout
+deactivate

@@ -37,3 +37,7 @@ You'll also need to authorize the app on device with a browser, and then copy th
 ## Running
 
 SSH into the device and run `python meeting_matrix.py`.
+
+## License
+
+The project is licensed under the GPLv2 license based on its dependency on [`hzeller/rpi-rgb-led-matrix`](https://github.com/hzeller/rpi-rgb-led-matrix).

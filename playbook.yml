@@ -107,3 +107,60 @@
       community.general.capabilities:
         path: /usr/bin/python3.9
         capability: "cap_sys_nice=eip"
+    - name: Install docker dependencies
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: true
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg
+        - lsb-release
+    - name: add Docker GPG key
+      become: true
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+    - name: add docker repository to apt
+      become: true
+      apt_repository:
+        repo: deb [arch=arm64] https://download.docker.com/linux/debian bullseye stable
+        state: present
+    - name: install docker
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+    - name: Add user to docker group
+      become: true
+      user:
+        name: pi
+        groups: docker
+        append: true
+    - name: Enable & Start Docker service
+      become: true
+      service:
+        name: docker
+        enabled: true
+        state: started
+    - name: Build Docker image
+      community.docker.docker_image:
+        build:
+          path: /home/pi/meeting-matrix/
+          pull: true
+        name: meeting-matrix
+        source: build
+        force_source: true
+    - name: Create Docker container
+      community.docker.docker_container:
+        name: meeting-matrix
+        image: meeting-matrix
+        restart_policy: unless-stopped
+        detach: true

@@ -11,8 +11,8 @@ RUN git clone https://github.com/hzeller/rpi-rgb-led-matrix.git \
     && make install-python PYTHON=$(which python3)
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./meeting_matrix.py" ]
+CMD [ "python3", "./meeting_matrix.py" ]

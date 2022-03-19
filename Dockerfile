@@ -3,7 +3,8 @@ FROM python:3
 WORKDIR /usr/src/app
 
 RUN apt-get update && apt-get install -y git make build-essential \
-    python3-dev python3 python3-distutils libsdl2-dev python3-pillow
+    python3-dev python3 python3-distutils libsdl2-dev python3-pillow \
+    python3-numpy
 
 RUN git clone https://github.com/hzeller/rpi-rgb-led-matrix.git \
     && cd rpi-rgb-led-matrix \

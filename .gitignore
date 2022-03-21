@@ -3,3 +3,5 @@ credentials.json
 env
 __pycache__
 hosts.yml
+rpi-rgb-led-matrix
+pygame

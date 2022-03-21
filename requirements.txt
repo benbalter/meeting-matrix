@@ -8,3 +8,4 @@ python-dateutil
 inflect
 pillow
 docker
+RGBMatrixEmulator>=0.5.2

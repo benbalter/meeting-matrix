@@ -12,6 +12,7 @@ from googleapiclient.errors import HttpError
 from dateutil import parser
 from event import Event
 
+
 class CalendarFetcher:
     """
     Retrieves the current event from the calendar
@@ -53,11 +54,11 @@ class CalendarFetcher:
             events = events_result.get('items', [])
             events = map(lambda e: Event(e), events)
             events = filter(lambda e: e.in_progress(), events)
-            event  = next(events, None)
+            event = next(events, None)
 
             if event:
                 logging.info("Found event: %s", event.title())
-            
+
             return event
 
         except HttpError as error:

@@ -12,7 +12,7 @@ class Canvas:
         options.cols = 64
         options.gpio_slowdown = 2
         options.hardware_mapping = 'adafruit-hat'
-        options.pixel_mapper_config = 'mirror:h'
+        #options.pixel_mapper_config = 'mirror:h'
         self.matrix = RGBMatrix(options=options)
 
         self.font = graphics.Font()

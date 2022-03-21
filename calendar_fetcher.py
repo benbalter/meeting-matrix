@@ -40,7 +40,7 @@ class CalendarFetcher:
         """
         Retrieves the current event, if any
 
-        Returns an Events()
+        Returns an Event()
         """
         try:
             logging.info("Fetching calendar")
@@ -48,14 +48,18 @@ class CalendarFetcher:
             service = build('calendar', 'v3', credentials=self.creds)
             now = datetime.datetime.utcnow().isoformat() + 'Z'
             events_result = service.events().list(calendarId='primary', timeMin=now,
-                                                  maxResults=1, singleEvents=True,
+                                                  singleEvents=True,
                                                   orderBy='startTime').execute()
             events = events_result.get('items', [])
-            logging.info("Found event: %s", events[0]['summary'])
+            events = map(lambda e: Event(e), events)
+            events = filter(lambda e: e.in_progress(), events)
+            event  = next(events, None)
+
+            if event:
+                logging.info("Found event: %s", event.title())
             
-            return Event(events[0])
+            return event
 
         except HttpError as error:
-            print('An error occurred: %s' % error)
+            logging.error('An error occurred: %s', error)
             return []
-

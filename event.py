@@ -1,6 +1,7 @@
 from dateutil import parser
 import datetime
 import math
+import logging
 
 class Event:
   """
@@ -9,6 +10,9 @@ class Event:
 
   def __init__(self, data):
     self.data = data
+
+  def title(self):
+    return self.data['summary']
 
   def start(self):
     """
@@ -26,7 +30,10 @@ class Event:
     """
     Returns the parsed start or end time as a DateTime
     """
-    return parser.parse(self.data[time].get('dateTime'))
+    time = self.data[time].get('dateTime')
+  
+    if time:
+      return parser.parse(time)
 
   def time_remaining(self):
     """
@@ -50,6 +57,9 @@ class Event:
     """
     Returns true if the current event is in progress 
     """
+
+    if not self.start() or not self.end():
+      return False
 
     return self.start() <= datetime.datetime.now(datetime.timezone.utc) and self.end() >= datetime.datetime.now(datetime.timezone.utc)
 

@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3 AS builder
 
 WORKDIR /usr/src/app
 
@@ -15,9 +15,9 @@ RUN git clone https://github.com/hzeller/rpi-rgb-led-matrix.git \
     && make build-python PYTHON=$(which python3) \
     && make install-python PYTHON=$(which python3)
 
-RUN pip3 install --upgrade pip setuptools wheel                                                                                                                                                                                                
+RUN python3 -m pip install --upgrade pip setuptools wheel                                                                                                                                                                                                
 COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install -r ./requirements.txt
 
 COPY . .
 

@@ -61,10 +61,10 @@ def run():
   logging.info("Starting Run!")
   event = calendar_fetcher.current_event()
 
-  str = time_to_display(event)
   clear_and_schedule()
 
-  if str:
+  if event:
+    str = time_to_display(event)
     canvas.print_text(str)
 
 run()

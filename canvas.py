@@ -44,10 +44,8 @@ class Canvas:
         
         width = 0
         for char in text:
-            logging.info("Char: %s", char)
             width = width + font.CharacterWidth(ord(char))
 
-        logging.info("Text width: %d", width)
         return (self.canvas.width/2) - (width / 2)
 
     def print_minutes_remaining(self, event):
@@ -61,7 +59,7 @@ class Canvas:
         self.print_centered(text=minutes_remaining, font_size="9x15", y=15)
 
         self.print_centered(text=minute, y=25)
-        self.clear()
+        self.canvas = self.matrix.SwapOnVSync(self.canvas)
 
     def print_centered(self, text="", font_size="6x10", y=10):
         """
@@ -77,7 +75,5 @@ class Canvas:
         logging.info("Printing %s at %d x %d with font %s", text, x, y, font_size)
 
         font = self.load_font(font_size)
-
         blue = graphics.Color(0, 0, 255)
         graphics.DrawText(self.canvas, font, x, y, blue, text)
-        self.canvas = self.matrix.SwapOnVSync(self.canvas)

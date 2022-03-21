@@ -20,6 +20,7 @@ def clear_and_schedule():
   """
   Clears the canvas and schedules a `run()` for the top of the next minute
   """
+  logging.info("Clearing canvas")
   canvas.clear()
   logging.info("Waiting %d seconds until next minute", seconds_until_next_minute())
   scheduler.enter(seconds_until_next_minute(), 1, run)
@@ -35,6 +36,9 @@ def time_to_display(event):
   3. Every five minutes if more than five minutes remaning
   4. Every minute if less than five minutes remain 
   """
+  if not event:
+    return
+
   if not event.in_progress():
     logging.info("Event is not in progress")
     return
@@ -60,11 +64,11 @@ def run():
   """
   logging.info("Starting Run!")
   event = calendar_fetcher.current_event()
+  str = time_to_display(event)
 
   clear_and_schedule()
 
-  if event:
-    str = time_to_display(event)
+  if str:
     canvas.print_text(str)
 
 run()

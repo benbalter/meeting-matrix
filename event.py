@@ -61,6 +61,9 @@ class Event:
     if not self.start() or not self.end():
       return False
 
+    if self.data['status'] != 'confirmed':
+      return False
+
     return self.start() <= datetime.datetime.now(datetime.timezone.utc) and self.end() >= datetime.datetime.now(datetime.timezone.utc)
 
   def minutes_remaining(self):

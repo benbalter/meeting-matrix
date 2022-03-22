@@ -6,5 +6,5 @@ python3 -m pip install virtualenv
 virtualenv env
 source env/bin/activate
 script/rpi-rgb-led-matrix
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 #ansible-galaxy install -r requirements.yml

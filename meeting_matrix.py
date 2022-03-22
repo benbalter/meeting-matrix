@@ -2,6 +2,7 @@ from codecs import strict_errors
 from calendar_fetcher import CalendarFetcher
 from canvas import Canvas
 import time
+from datetime import datetime 
 import logging
 import sched
 import inflect
@@ -14,19 +15,31 @@ scheduler = sched.scheduler(time.time, time.sleep)
 inflect_engine = inflect.engine()
 
 
-def seconds_until_next_minute():
-    return 60 - time.time() % 60
+def seconds_until_next_minute(minutes=1):
+    """
+    Calculates the number of seconds until the next minute that's a multiple of the given minute
 
+    This allows us to schedule a run every 5 minutes until the last 5 minutes of the meeting, 
+    when we schedule a run for every minute.
+    """
+    seconds = minutes * 60
+    return seconds - (time.time() % seconds)
 
-def clear_and_schedule():
+def clear_and_schedule(event):
     """
     Clears the canvas and schedules a `run()` for the top of the next minute
     """
     logging.info("Clearing canvas")
     canvas.clear()
+
+    if should_display_time(event):
+        minutes = 1 
+    else:
+        minutes = 5
+
     logging.info("Waiting %d seconds until next minute",
-                 seconds_until_next_minute())
-    scheduler.enter(seconds_until_next_minute(), 1, run)
+                 seconds_until_next_minute(minutes))
+    scheduler.enter(seconds_until_next_minute(minutes), 1, run)
 
 
 def should_display_time(event):
@@ -72,13 +85,16 @@ def run():
     logging.info("Starting Run!")
 
     event = calendar_fetcher.current_event()
-    clear_and_schedule()
+    clear_and_schedule(event)
 
     if should_display_time(event):
         canvas.print_minutes_remaining(event)
 
 
-# canvas.print_centered("Test")
-# time.sleep(5)
+canvas.print_centered("Meeting")
+canvas.print_centered("Matrix", y=25)
+canvas.swap_canvas()
+time.sleep(1)
+
 run()
 scheduler.run()

@@ -2,10 +2,8 @@ google-api-python-client
 google-auth-httplib2 
 google-auth-oauthlib
 requests
-pylint
-autopep8
 python-dateutil
 inflect
-pillow
 docker
-RGBMatrixEmulator>=0.5.2
+Pillow
+numpy

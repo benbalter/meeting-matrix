@@ -34,8 +34,14 @@ class Canvas:
         """
         Clears the canvas
         """
-        self.canvas.Clear()
+        self.matrix.Clear()
 
+    def swap_canvas(self):
+        """
+        Prints the current canvas to the matrix
+        """
+        self.canvas = self.matrix.SwapOnVSync(self.canvas)
+        
     def center_point(self, text, font_size):
         """
         Returns the x,y coordinates that centers the text horizontally
@@ -57,9 +63,8 @@ class Canvas:
 
         minutes_remaining = str(minutes_remaining)
         self.print_centered(text=minutes_remaining, font_size="9x15", y=15)
-
         self.print_centered(text=minute, y=25)
-        self.canvas = self.matrix.SwapOnVSync(self.canvas)
+        self.swap_canvas()
 
     def print_centered(self, text="", font_size="6x10", y=10):
         """

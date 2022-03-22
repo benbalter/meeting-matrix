@@ -1,0 +1,4 @@
+-r requirements.txt
+pylint
+autopep8
+RGBMatrixEmulator>=0.5.2

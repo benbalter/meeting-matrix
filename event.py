@@ -52,11 +52,12 @@ class Event:
         """
         Returns the percent of the event remaining
         """
-        return float(self.time_remaining().total_seconds()) / float(self.durration().total_seconds())
+        return float(self.time_remaining().total_seconds()) / \
+            float(self.durration().total_seconds())
 
     def in_progress(self):
         """
-        Returns true if the current event is in progress 
+        Returns true if the current event is in progress
         """
 
         if not self.start() or not self.end():
@@ -65,7 +66,8 @@ class Event:
         if self.data['status'] != 'confirmed':
             return False
 
-        return self.start() <= datetime.datetime.now(datetime.timezone.utc) and self.end() >= datetime.datetime.now(datetime.timezone.utc)
+        return self.start() <= datetime.datetime.now(datetime.timezone.utc) and self.end(
+        ) >= datetime.datetime.now(datetime.timezone.utc)
 
     def minutes_remaining(self):
         """

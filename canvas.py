@@ -1,10 +1,11 @@
-try :
+try:
     from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 except ModuleNotFoundError as error:
     from RGBMatrixEmulator import RGBMatrix, RGBMatrixOptions, graphics
 
 import logging
 import inflect
+
 
 class Canvas:
     """
@@ -41,18 +42,18 @@ class Canvas:
         Prints the current canvas to the matrix
         """
         self.canvas = self.matrix.SwapOnVSync(self.canvas)
-        
+
     def center_point(self, text, font_size):
         """
         Returns the x,y coordinates that centers the text horizontally
         """
         font = self.load_font(font_size)
-        
+
         width = 0
         for char in text:
             width = width + font.CharacterWidth(ord(char))
 
-        return (self.canvas.width/2) - (width / 2)
+        return (self.canvas.width / 2) - (width / 2)
 
     def print_minutes_remaining(self, event):
         """
@@ -71,13 +72,14 @@ class Canvas:
         Prints the given string horizontally centered on the matrix
         """
         center = self.center_point(text, font_size)
-        self.print_text(text=text,x=center, y=y, font_size=font_size)
+        self.print_text(text=text, x=center, y=y, font_size=font_size)
 
     def print_text(self, text="", x=2, y=10, font_size="6x10"):
         """
         Prints the given text to the matrix
         """
-        logging.info("Printing %s at %d x %d with font %s", text, x, y, font_size)
+        logging.info("Printing %s at %d x %d with font %s",
+                     text, x, y, font_size)
 
         font = self.load_font(font_size)
         blue = graphics.Color(0, 0, 255)

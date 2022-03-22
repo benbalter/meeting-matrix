@@ -2,7 +2,7 @@ from codecs import strict_errors
 from calendar_fetcher import CalendarFetcher
 from canvas import Canvas
 import time
-from datetime import datetime 
+from datetime import datetime
 import logging
 import sched
 import inflect
@@ -19,11 +19,12 @@ def seconds_until_next_minute(minutes=1):
     """
     Calculates the number of seconds until the next minute that's a multiple of the given minute
 
-    This allows us to schedule a run every 5 minutes until the last 5 minutes of the meeting, 
+    This allows us to schedule a run every 5 minutes until the last 5 minutes of the meeting,
     when we schedule a run for every minute.
     """
     seconds = minutes * 60
     return seconds - (time.time() % seconds)
+
 
 def clear_and_schedule(event):
     """
@@ -33,7 +34,7 @@ def clear_and_schedule(event):
     canvas.clear()
 
     if should_display_time(event):
-        minutes = 1 
+        minutes = 1
     else:
         minutes = 5
 
@@ -51,7 +52,7 @@ def should_display_time(event):
     1. Less than or equal to 50% of the event
     2. Every ten minutes if more than twenty minutes remaining
     3. Every five minutes if more than five minutes remaning
-    4. Every minute if less than five minutes remain 
+    4. Every minute if less than five minutes remain
     """
     if not event:
         logging.info("No event found")

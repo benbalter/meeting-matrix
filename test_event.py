@@ -7,7 +7,7 @@ from dateutil.tz import tzutc
 from dateutil import parser
 
 
-@pytest.fixture(params=[30, 25, 60, 55])
+@pytest.fixture(params=[30, 25, 60, 55, 15])
 def event(request):
     """
     Returns a mock event starting at 2022-01-01T00:00:00Z with data pre-populated
@@ -121,8 +121,8 @@ def test_percent_remaining(event):
     """
     Test that the percent remaining is calculated correctly
     """
-    half = event.durration() / 2
-    with freeze_time(event.start() + half):
+    half = event.perceived_durration() / 2
+    with freeze_time(event.end() - half):
         assert event.percent_remaining() == 0.5
 
 

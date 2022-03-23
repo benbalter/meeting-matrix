@@ -112,13 +112,13 @@ class Event:
             logging.info("Event is not in progress")
             return False
 
-        if self.percent_remaining() > .5:
-            logging.info("%f of event remaining", self.percent_remaining())
-            return False
-
         minutes_remaining = self.minutes_remaining()
         minute = self.inflect_engine.plural("minute", minutes_remaining)
         logging.info("%d %s remaining", minutes_remaining, minute)
+
+        if minutes_remaining > 30 or self.percent_remaining() > (2/3):
+            logging.info("%f of event remaining", self.percent_remaining())
+            return False
 
         if minutes_remaining > 20 and minutes_remaining % 10 == 0:
             return True

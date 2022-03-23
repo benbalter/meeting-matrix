@@ -5,14 +5,12 @@ import time
 from datetime import datetime
 import logging
 import sched
-import inflect
 
 logging.basicConfig(level=logging.DEBUG)
 
 calendar_fetcher = CalendarFetcher()
 canvas = Canvas()
 scheduler = sched.scheduler(time.time, time.sleep)
-inflect_engine = inflect.engine()
 
 
 def seconds_until_next_minute(minutes=1):
@@ -33,7 +31,7 @@ def clear_and_schedule(event):
     logging.info("Clearing canvas")
     canvas.clear()
 
-    if should_display_time(event):
+    if event and event.should_display_time():
         minutes = 1
     else:
         minutes = 5
@@ -41,42 +39,6 @@ def clear_and_schedule(event):
     logging.info("Waiting %d seconds until next minute",
                  seconds_until_next_minute(minutes))
     scheduler.enter(seconds_until_next_minute(minutes), 1, run)
-
-
-def should_display_time(event):
-    """
-    Given an event, determines when to display the time remaining
-
-    Conditions where the time remaining is displayed:
-
-    1. Less than or equal to 50% of the event
-    2. Every ten minutes if more than twenty minutes remaining
-    3. Every five minutes if more than five minutes remaning
-    4. Every minute if less than five minutes remain
-    """
-    if not event:
-        logging.info("No event found")
-        return False
-
-    if not event.in_progress():
-        logging.info("Event is not in progress")
-        return False
-
-    if event.percent_remaining() > .5:
-        logging.info("%f of event remaining", event.percent_remaining())
-        return False
-
-    minutes_remaining = event.minutes_remaining()
-    minute = inflect_engine.plural("minute", minutes_remaining)
-    logging.info("%d %s remaining", minutes_remaining, minute)
-
-    if minutes_remaining > 20 and minutes_remaining % 10 == 0:
-        return True
-
-    if minutes_remaining < 5 or minutes_remaining % 5 == 0:
-        return True
-
-    return False
 
 
 def run():
@@ -88,7 +50,7 @@ def run():
     event = calendar_fetcher.current_event()
     clear_and_schedule(event)
 
-    if should_display_time(event):
+    if event and event.should_display_time():
         canvas.print_minutes_remaining(event)
 
 

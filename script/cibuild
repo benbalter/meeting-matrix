@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e 
+
+py.test --ignore=pygame --ignore=rpi-rgb-led-matrix

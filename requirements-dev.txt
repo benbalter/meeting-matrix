@@ -2,3 +2,5 @@
 pylint
 autopep8
 RGBMatrixEmulator>=0.5.2
+pytest
+freezegun

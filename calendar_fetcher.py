@@ -48,9 +48,11 @@ class CalendarFetcher:
 
             service = build('calendar', 'v3', credentials=self.creds)
             now = datetime.datetime.utcnow().isoformat() + 'Z'
-            events_result = service.events().list(calendarId='primary', timeMin=now,
-                                                  singleEvents=True,
-                                                  orderBy='startTime').execute()
+            events_result = service.events().list(
+                calendarId='primary',
+                timeMin=now,
+                singleEvents=True,
+                orderBy='startTime').execute()
             events = events_result.get('items', [])
             events = map(lambda e: Event(e), events)
             events = filter(lambda e: e.in_progress(), events)

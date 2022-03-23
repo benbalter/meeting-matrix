@@ -37,7 +37,8 @@ def minutes_to_display(request):
     return request.param
 
 
-@pytest.fixture(params=[60, 59, 55, 51, 50, 49, 45, 41, 40, 36, 35, 32, 27, 25, 22, 20, 11, 6])
+@pytest.fixture(params=[60, 59, 55, 51, 50, 49, 45, 41,
+                40, 36, 35, 32, 27, 25, 22, 20, 11, 6])
 def minutes_not_to_display(request):
     """
     Fixture to iterate through times not intended to display
@@ -80,7 +81,7 @@ def test_time_remaining(event):
     """
     Test that the time remaining is calculated correctly
     """
-    half = datetime.timedelta(minutes=event.data["_duration"]/2)
+    half = datetime.timedelta(minutes=event.data["_duration"] / 2)
     with freeze_time(event.start() + half):
         assert event.time_remaining() == half
 
@@ -113,7 +114,7 @@ def test_in_progress(event):
     """
     Test that the event determined to be in progress correctly
     """
-    assert event.in_progress() == True
+    assert event.in_progress()
 
 
 def test_percent_remaining(event):
@@ -138,7 +139,7 @@ def test_minutes_remaining(event):
     """
     Test that the minutes remaining is calculated correctly
     """
-    half = datetime.timedelta(minutes=event.data["_duration"]/2)
+    half = datetime.timedelta(minutes=event.data["_duration"] / 2)
     with freeze_time(event.start() + half):
         assert event.minutes_remaining() == round(half.total_seconds() / 60)
 

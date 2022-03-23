@@ -7,7 +7,7 @@ from dateutil.tz import tzutc
 from dateutil import parser
 
 
-@pytest.fixture(params=[30, 25, 60, 55, 15])
+@pytest.fixture(params=[15, 25, 30, 55, 60])
 def event(request):
     """
     Returns a mock event starting at 2022-01-01T00:00:00Z with data pre-populated

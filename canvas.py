@@ -6,6 +6,7 @@ except ModuleNotFoundError as error:
 import logging
 import inflect
 
+logger = logging.getLogger('meeting_matrix')
 
 class Canvas:
     """
@@ -35,6 +36,7 @@ class Canvas:
         """
         Clears the canvas
         """
+        logger.info("Clearing canvas")
         self.matrix.Clear()
         self.canvas.Clear()
         self.swap_canvas()
@@ -43,6 +45,7 @@ class Canvas:
         """
         Prints the current canvas to the matrix
         """
+        logger.info("Swapping canvas")
         self.canvas = self.matrix.SwapOnVSync(self.canvas)
 
     def center_point(self, text, font_size):
@@ -80,7 +83,7 @@ class Canvas:
         """
         Prints the given text to the matrix
         """
-        logging.info("Printing %s at %d x %d with font %s",
+        logger.info("Printing %s at %d x %d with font %s",
                      text, x, y, font_size)
 
         font = self.load_font(font_size)

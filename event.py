@@ -4,6 +4,7 @@ import math
 import logging
 import inflect
 
+logger = logging.getLogger('meeting_matrix')
 
 class Event:
     """
@@ -109,15 +110,15 @@ class Event:
         4. Every minute if less than five minutes remain
         """
         if not self.in_progress():
-            logging.info("Event is not in progress")
+            logger.info("Event is not in progress")
             return False
 
         minutes_remaining = self.minutes_remaining()
         minute = self.inflect_engine.plural("minute", minutes_remaining)
-        logging.info("%d %s remaining", minutes_remaining, minute)
+        logger.info("%d %s remaining", minutes_remaining, minute)
 
         if minutes_remaining > 30 or self.percent_remaining() > (2/3):
-            logging.info("%f of event remaining", self.percent_remaining())
+            logger.info("%f of event remaining", self.percent_remaining())
             return False
 
         if minutes_remaining > 20 and minutes_remaining % 10 == 0:

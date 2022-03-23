@@ -12,6 +12,7 @@ from googleapiclient.errors import HttpError
 from dateutil import parser
 from event import Event
 
+logger = logging.getLogger('meeting_matrix')
 
 class CalendarFetcher:
     """
@@ -44,7 +45,7 @@ class CalendarFetcher:
         Returns an Event()
         """
         try:
-            logging.info("Fetching calendar")
+            logger.info("Fetching calendar")
 
             service = build('calendar', 'v3', credentials=self.creds)
             now = datetime.datetime.utcnow().isoformat() + 'Z'
@@ -59,10 +60,10 @@ class CalendarFetcher:
             event = next(events, None)
 
             if event:
-                logging.info("Found event: %s", event.title())
+                logger.info("Found event: %s", event.title())
 
             return event
 
         except HttpError as error:
-            logging.error('An error occurred: %s', error)
+            logger.error('An error occurred: %s', error)
             return []

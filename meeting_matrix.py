@@ -6,7 +6,13 @@ from datetime import datetime
 import logging
 import sched
 
-logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('meeting_matrix')
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 calendar_fetcher = CalendarFetcher()
 canvas = Canvas()
@@ -28,7 +34,6 @@ def clear_and_schedule(event):
     """
     Clears the canvas and schedules a `run()` for the top of the next minute
     """
-    logging.info("Clearing canvas")
     canvas.clear()
 
     if event and event.should_display_time():
@@ -36,7 +41,7 @@ def clear_and_schedule(event):
     else:
         minutes = 5
 
-    logging.info("Waiting %d seconds until next minute",
+    logger.info("Waiting %d seconds until next minute",
                  seconds_until_next_minute(minutes))
     scheduler.enter(seconds_until_next_minute(minutes), 1, run)
 
@@ -45,7 +50,7 @@ def run():
     """
     Checks for the current event and updates the matrix
     """
-    logging.info("Starting Run!")
+    logger.info("Starting Run!")
 
     event = calendar_fetcher.current_event()
     clear_and_schedule(event)

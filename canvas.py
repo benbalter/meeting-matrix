@@ -36,6 +36,8 @@ class Canvas:
         Clears the canvas
         """
         self.matrix.Clear()
+        self.canvas.Clear()
+        self.swap_canvas()
 
     def swap_canvas(self):
         """

@@ -29,7 +29,7 @@ def event(request):
     return Event(data)
 
 
-@pytest.fixture(params=[30, 15, 10, 5, 4, 3, 2, 1])
+@pytest.fixture(params=[30, 15, 10, 5, 4, 3, 2, 1, 0])
 def minutes_to_display(request):
     """
     Fixture to iterate through times intended to display
@@ -37,7 +37,7 @@ def minutes_to_display(request):
     return request.param
 
 
-@pytest.fixture(params=[60, 59, 55, 51, 50, 49, 45, 41,
+@pytest.fixture(params=[120, 90, 70, 65, 61, 60, 59, 55, 51, 50, 49, 45, 41,
                 40, 36, 35, 32, 27, 25, 22, 20, 11, 6])
 def minutes_not_to_display(request):
     """

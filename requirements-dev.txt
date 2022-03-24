@@ -7,3 +7,5 @@ freezegun
 ansible
 ansible
 ansible-lint[yamllint]
+docker
+docker-compose

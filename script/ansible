@@ -3,7 +3,7 @@
 set -e
 
 source env/bin/activate
-eval $(op signin balter)
+eval $(op signin)
 ansible-playbook playbook.yml --inventory hosts.yml
 op signout
 deactivate

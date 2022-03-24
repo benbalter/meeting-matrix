@@ -4,6 +4,7 @@ google-auth-oauthlib
 requests
 python-dateutil
 inflect
-docker
 Pillow
 numpy
+docker
+docker-compose

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+source env/bin/activate
+ansible-lint
+yamllint -c .yamllint.yml *.yml
+docker-compose config --quiet
+deactivate

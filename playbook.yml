@@ -7,7 +7,7 @@
         key: https://github.com/benbalter.keys
     - name: update and upgrade apt packages
       become: true
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
         update_cache: true
     - name: set timezone
@@ -16,28 +16,56 @@
       become: true
     - name: install unattended upgrades
       become: true
-      apt:
+      ansible.builtin.apt:
         name: unattended-upgrades
         state: present
     - name: Setup unattended upgrades
-      debconf:
+      ansible.builtin.debconf:
         name: unattended-upgrades
         question: unattended-upgrades/enable_auto_updates
         vtype: boolean
         value: "true"
     - name: install ntp
       become: true
-      apt:
+      ansible.builtin.apt:
         name: ntp
         state: present
     - name: enable ntp
-      service:
+      ansible.builtin.service:
         name: ntp
         state: started
         enabled: true
+    - name: install ufw
+      become: true
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+    - name: limit ssh
+      become: true
+      community.general.ufw:
+        rule: limit
+        port: ssh
+        proto: tcp
+    - name: Allow all access to port 22
+      become: true
+      community.general.ufw:
+        rule: allow
+        app: '{{ item }}'
+      loop:
+        - SSH
+    - name: enable ufw and default to deny
+      become: true
+      community.general.ufw:
+        state: enabled
+        default: deny
+    - name: install fail2ban
+      become: true
+      ansible.builtin.apt:
+        name: fail2ban
+        state: present
     - name: Install dependencies
       become: true
-      apt:
+      ansible.builtin.apt:
         name: "{{ item }}"
         state: present
         update_cache: true
@@ -60,55 +88,16 @@
         repo: meeting-matrix
         token: "{{ lookup('community.general.onepassword', 'Raspberry pi', field='GitHub Token') }}"
     - name: Clone benbalter/meeting-matrix
-      git:
+      ansible.builtin.git:
         repo: git@github.com:benbalter/meeting-matrix.git
         dest: /home/pi/meeting-matrix/
         clone: true
         update: true
         key_file: ~/.ssh/id_github
         accept_hostkey: true
-    - name: Install python requirements
-      pip:
-        chdir: /home/pi/meeting-matrix/
-        requirements: requirements.txt
-    - name: Clone hzeller/rpi-rgb-led-matrix repo
-      git:
-        repo: https://github.com/hzeller/rpi-rgb-led-matrix
-        dest: /home/pi/rpi-rgb-led-matrix/
-        clone: true
-        update: true
-        accept_hostkey: true
-    - name: Build Python bindings
-      community.general.make:
-        chdir: /home/pi/rpi-rgb-led-matrix/
-        target: build-python
-        params:
-          HARDWARE_DESC: adafruit-hat
-          PYTHON: /usr/bin/python3
-          DLED_COLS: 64
-          DLED_ROWS: 32
-    - name: Install Python bindings
-      become: true
-      community.general.make:
-        chdir: /home/pi/rpi-rgb-led-matrix/
-        target: install-python
-        params:
-          HARDWARE_DESC: adafruit-hat
-          PYTHON: /usr/bin/python3
-          DLED_COLS: 64
-          DLED_ROWS: 32
-    - name: Ensure deploy key is present
-      community.crypto.openssh_keypair:
-        path: "~/.ssh/id_github"
-        type: ed25519
-      register: deploy_key
-    - name: Allow Python to run as root
-      community.general.capabilities:
-        path: /usr/bin/python3.9
-        capability: "cap_sys_nice=eip"
     - name: Install docker dependencies
       become: true
-      apt:
+      ansible.builtin.apt:
         name: "{{ item }}"
         state: present
         update_cache: true
@@ -120,17 +109,17 @@
         - lsb-release
     - name: add Docker GPG key
       become: true
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/debian/gpg
         state: present
     - name: add docker repository to apt
       become: true
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb [arch=arm64] https://download.docker.com/linux/debian bullseye stable
         state: present
     - name: install docker
       become: true
-      apt:
+      ansible.builtin.apt:
         name: "{{ item }}"
         state: present
       loop:
@@ -139,27 +128,26 @@
         - containerd.io
     - name: Add user to docker group
       become: true
-      user:
+      ansible.builtin.user:
         name: pi
         groups: docker
         append: true
     - name: Enable & Start Docker service
       become: true
-      service:
+      ansible.builtin.service:
         name: docker
         enabled: true
         state: started
-    - name: Build Docker image
-      community.docker.docker_image:
-        build:
-          path: /home/pi/meeting-matrix/
-          pull: true
-        name: meeting-matrix
-        source: build
-        force_source: true
-    - name: Create Docker container
-      community.docker.docker_container:
-        name: meeting-matrix
-        image: meeting-matrix
-        restart_policy: unless-stopped
-        detach: true
+    - name: Install docker compose
+      ansible.builtin.pip:
+        executable: pip3
+        name:
+          - docker
+          - docker-compose
+    - name: Init Docker container
+      community.docker.docker_compose:
+        project_src: /home/pi/meeting-matrix/
+        pull: true
+        build: true
+        remove_orphans: true
+      register: output

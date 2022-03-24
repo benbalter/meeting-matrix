@@ -1,0 +1,7 @@
+extends: default
+
+rules:
+  document-start: disable
+  line-length: disable
+  indentation: disable
+  new-line-at-end-of-file: disable

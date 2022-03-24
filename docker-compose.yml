@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  meeting-matrix:
+    container_name: meeting-matrix
+    restart: unless-stopped
+    build: ./
+    devices:
+      - /dev/gpiomem

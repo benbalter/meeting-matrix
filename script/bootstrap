@@ -7,4 +7,5 @@ virtualenv env
 source env/bin/activate
 #script/rpi-rgb-led-matrix
 pip install -r requirements-dev.txt
+python3 -m pip install git+https://github.com/pygame/pygame.git
 #ansible-galaxy install -r requirements.yml

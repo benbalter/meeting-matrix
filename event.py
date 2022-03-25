@@ -89,13 +89,29 @@ class Event:
 
         return self.end() >= datetime.datetime.now(datetime.timezone.utc)
 
+    def is_self(self, attendee):
+        """
+        Determins if the attendee is the authorized user
+        """
+
+        if not 'self' in attendee:
+            return False
+
+        return attendee['self']
+
     def is_attending(self):
         """
         Returns true if the authorized user is attending the event
         """
+        if self.data['organizer']['self'] or self.data['creator']['self']:
+            return True
+
+        if not self.data['attendees']:
+            return False
 
         attendees = self.data["attendees"]
-        authorized_user = filter(lambda a: a["self"], attendees)
+
+        authorized_user = filter(self.is_self, attendees)
         authorized_user = next(authorized_user, None)
 
         if not authorized_user:

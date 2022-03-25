@@ -23,10 +23,23 @@ def event(request):
         'start': {'dateTime': str(start)},
         'end': {'dateTime': str(end)},
         'status': 'confirmed',
+        'attendees': [
+            {'self': True, 'responseStatus': 'accepted'},
+        ],
         '_duration': request.param
     }
 
     return Event(data)
+
+
+@pytest.fixture
+def declined_event(event):
+    attendees = [
+        {'self': True, 'responseStatus': 'needsAction'},
+    ]
+    event.data["attendees"] = attendees
+
+    return event
 
 
 @pytest.fixture(params=[30, 15, 10, 5, 4, 3, 2, 1, 0])
@@ -115,6 +128,20 @@ def test_in_progress(event):
     Test that the event determined to be in progress correctly
     """
     assert event.in_progress()
+
+
+def test_is_attending(event):
+    """
+    Test that the authorized user is attending the event
+    """
+    assert event.is_attending() is True
+
+
+def test_is_not_attending(declined_event):
+    """
+    Test that the authorized user is not attending the event
+    """
+    assert declined_event.is_attending() is False
 
 
 def test_percent_remaining(event):

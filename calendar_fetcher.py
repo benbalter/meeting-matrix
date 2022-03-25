@@ -14,6 +14,7 @@ from event import Event
 
 logger = logging.getLogger('meeting_matrix')
 
+
 class CalendarFetcher:
     """
     Retrieves the current event from the calendar
@@ -56,7 +57,8 @@ class CalendarFetcher:
                 orderBy='startTime').execute()
             events = events_result.get('items', [])
             events = map(lambda e: Event(e), events)
-            events = filter(lambda e: e.in_progress(), events)
+            events = filter(lambda e: e.in_progress()
+                            and e.is_attending(), events)
             event = next(events, None)
 
             if event:

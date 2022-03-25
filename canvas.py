@@ -8,6 +8,7 @@ import inflect
 
 logger = logging.getLogger('meeting_matrix')
 
+
 class Canvas:
     """
     Manages drawing to the matrix
@@ -84,7 +85,7 @@ class Canvas:
         Prints the given text to the matrix
         """
         logger.info("Printing %s at %d x %d with font %s",
-                     text, x, y, font_size)
+                    text, x, y, font_size)
 
         font = self.load_font(font_size)
         blue = graphics.Color(0, 0, 255)

@@ -10,7 +10,8 @@ logger = logging.getLogger('meeting_matrix')
 logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
@@ -42,7 +43,7 @@ def clear_and_schedule(event):
         minutes = 5
 
     logger.info("Waiting %d seconds until next minute",
-                 seconds_until_next_minute(minutes))
+                seconds_until_next_minute(minutes))
     scheduler.enter(seconds_until_next_minute(minutes), 1, run)
 
 

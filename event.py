@@ -6,6 +6,7 @@ import inflect
 
 logger = logging.getLogger('meeting_matrix')
 
+
 class Event:
     """
     Represents a single calendar event
@@ -83,13 +84,24 @@ class Event:
         if not self.start() or not self.end():
             return False
 
-        if self.data['status'] != 'confirmed':
-            return False
-
         if self.start() >= datetime.datetime.now(datetime.timezone.utc):
             return False
 
         return self.end() >= datetime.datetime.now(datetime.timezone.utc)
+
+    def is_attending(self):
+        """
+        Returns true if the authorized user is attending the event
+        """
+
+        attendees = self.data["attendees"]
+        authorized_user = filter(lambda a: a["self"], attendees)
+        authorized_user = next(authorized_user, None)
+
+        if not authorized_user:
+            return False
+
+        return authorized_user["responseStatus"] == "accepted"
 
     def minutes_remaining(self):
         """

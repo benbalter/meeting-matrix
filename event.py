@@ -93,24 +93,20 @@ class Event:
         """
         Determins if the attendee is the authorized user
         """
-
-        if not 'self' in attendee:
-            return False
-
-        return attendee['self']
+        
+        return attendee.get('self', False)
 
     def is_attending(self):
         """
         Returns true if the authorized user is attending the event
         """
-        if self.data['organizer']['self'] or self.data['creator']['self']:
+        if self.data['organizer'].get('self') or self.data['creator'].get('self'):
             return True
 
-        if not self.data['attendees']:
+        if not self.data.get('attendees'):
             return False
 
         attendees = self.data["attendees"]
-
         authorized_user = filter(self.is_self, attendees)
         authorized_user = next(authorized_user, None)
 

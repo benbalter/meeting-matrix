@@ -45,7 +45,7 @@ You'll also need to authorize the app on device with a browser, and then copy th
 
 ## Running
 
-SSH into the device and run `python meeting_matrix.py`.
+The script should run automatically via Docker Compose as a service once the Raspberri Pi boots up. To authenticate or test locally run `python meeting_matrix.py`.
 
 ## Status
 

@@ -3,9 +3,8 @@ pylint
 autopep8
 RGBMatrixEmulator>=0.5.2
 pytest
+flake8
 freezegun
-ansible
 ansible
 ansible-lint[yamllint]
 docker
-docker-compose

@@ -100,7 +100,7 @@ class Event:
         """
         Returns true if the authorized user is attending the event
         """
-        if self.data['organizer'].get('self') or self.data['creator'].get('self'):
+        if self.data.get('organizer', {}).get('self') or self.data.get('creator', {}).get('self'):
             return True
 
         if not self.data.get('attendees'):
